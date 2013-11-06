@@ -1,0 +1,570 @@
+<apex:page showHeader="false"  sidebar="false" standardStylesheets="false" cache="false" contentType="text/css">
+	body{
+		margin: 0px;
+		font-family: Helvetica;
+		color: #7a7a7a;
+		background-color: #476783 !important;
+	}
+
+	.appHeader{
+		background: #2a93d5; /* Old browsers */
+		background: -moz-linear-gradient(top,  #2a93d5 0%, #107abb 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2a93d5), color-stop(100%,#107abb)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #2a93d5 0%,#107abb 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #2a93d5 0%,#107abb 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #2a93d5 0%,#107abb 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #2a93d5 0%,#107abb 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2a93d5', endColorstr='#107abb',GradientType=0 ); /* IE6-9 */
+		height: 130px;
+	}
+
+	.appHeader div{
+		display: table-cell;
+		vertical-align: middle;
+	}
+	.headerBtn{
+		height: 130px;
+		padding: 0px 20px;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	#logo{
+		text-align: center;
+		width: 100%;
+	}
+	.emptyBar
+	{
+		position: absolute;
+		top: 130px;
+		left: 0;
+		width: 100%;
+		height: 45px;
+		background: #293F56;
+	}
+	.dateBar {
+		background-color: #293f54;
+	}
+	.sItem
+	{
+		padding: 15px 5px;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+	}
+	.sItem h5, .sItem p
+	{
+		margin: 0px;
+	}
+	.shiftItemRow .sItem:hover
+	{
+		background: rgba(159, 235, 144, 0.36);
+		cursor: pointer;
+	}
+
+
+	.shiftTimeBar{
+		background-color: #486785;
+	}
+
+	.manager_highlight{
+		background-color: #def8e6;
+	}
+
+	.profilebox{
+		background-color: #f6f5f5;
+		border: 1px solid #929292;
+		box-shadow: 0 1px 3px black;
+		opacity: 0.2;
+		border-radius: 3px;
+		-webkit-border-radius : 3px;
+	}
+	.profileImg
+	{
+		cursor: pointer;
+		position: relative;
+		width: 100px;
+		float: right;
+		height: 100px;
+	}
+	.appBody{
+		width: 100%;
+	}
+	.allShifts
+	{
+		position:absolute;
+		left:0;
+		top: 130px;
+		width: 100%;
+		min-height: 748px;
+		overflow: hidden;
+		background-origin:content-box;
+	}
+	.shiftDetail
+	{
+		position:absolute;
+		left:0;
+		top: 130px;
+		width: 100%;
+		height: 135%;
+		background: white;
+	}
+
+	.allShiftAttendees
+	{
+		position:relative;
+		float:left;
+		width: 200px;
+		height: 185px;
+		overflow:hidden;
+		padding: 15px;
+		box-shadow: 0 0 4px 2px rgba(0,0,0,0.2);
+		margin: 20px 0 0 30px;
+		background: rgb(248, 248, 248);
+	}
+
+	/*shift detail css*/
+	.daysCol{
+		display: block;
+		float: left;
+		width: 246px;
+		margin: 0px 0px 0px 10px;
+		background: white;
+		/*height: 100%;*/
+	}
+	.daysCol h3
+	{
+		color: white;
+		font-size: 15.5px;
+		height: 45px;
+		text-align: center;
+		font-weight: 100;
+		letter-spacing: 1px;
+		margin: 0;
+		background: #293F56;
+	}
+	.allShiftAttendees h4,.allShiftAttendees h5, .allShiftAttendees h6, .allShiftAttendees a
+	{
+		text-align: right;
+		float: right;
+		clear: both;
+		margin: 0;
+	}
+	.allShiftAttendees h6, .managerDiv h6
+	{
+		color: rgb(95, 95, 95);
+		margin: 0;
+	}
+	.managerDiv h5
+	{
+		margin: 0;
+	}
+
+	.checkinDiv
+	{
+		position:relative;
+		float:left;
+		width:24%;
+		padding: 10px 0px 10px 10px;
+	}
+	.shiftCheckBox
+	{
+		width: 35px;
+		height: 35px;
+		background: rgba(189, 189, 189, 0.2);
+		box-shadow: 0 0 2px 2px rgba(162, 162, 162, 0.68);
+		cursor: pointer;
+		margin: 30px 0 0 10px;
+	}
+	.attendeeInfo
+	{
+		position:relative;
+		float:right;
+		width: 97%;
+		margin:5px 5px 0 0;
+	}
+	.leftSideBar
+	{
+		position: absolute;
+		left: 0;
+		padding: 0px;
+		width: 21.5%;
+		height: 610px;
+		border-right: 1px solid rgba(209, 209, 209, 0.4);
+	}
+	.rightSideBar
+	{
+		position: absolute;
+		left: 21.5%;
+		width: 78.54%;
+	}
+	.searchDiv
+	{
+		height: 21px;
+		background: #293F56;
+		padding-right: 10px;
+		padding: 12px 10px;
+		color:white;
+	}
+	.searchDiv .navbar-search
+	{
+		margin-top: 0px;
+		top:-5px;
+	}
+	.navbar-search .search-query
+	{
+		width: 85%;
+	}
+	.searchDiv.checkbox input[type="checkbox"]
+	{
+		margin-left: -15px;
+
+	}
+	.searchDiv .filterCheckbox
+	{
+		padding-left: 30px;
+		padding-right: 15px;
+	}
+	.searchDiv .boothSelect
+	{
+		margin: -4px 20px 0 0;
+		width: 20%;
+	}
+	.leftSideBar select
+	{
+		width: 100%;
+	}
+
+	.leftSideBar .leftBarHeader
+	{
+		color: white;
+		padding: 13px 10px 12px 10px;
+		text-align: center;
+		font-weight: 350;
+		height: 20px;
+		background: #293F56;
+	}
+	.managerSelectSection
+	{
+		width: 82%;
+		margin: 0 auto;
+	}
+	.managerDiv
+	{
+		position:relative;
+		float:left;
+		border: 1px solid rgba(65, 65, 65, 0.21);
+		border-top: none;
+		border-right: none;
+		width: 99%;
+	}
+	.managerDiv img
+	{
+		position:relative;
+		float:left;
+		margin: 5px;
+		width: 70px;
+		height: 70px;
+	}
+	.managerInfo
+	{
+		position:relative;
+		float:left;
+		width: 124px;
+		padding: 0 5px 0 2px;
+	}
+	.phone
+	{
+		padding: 2px;
+		font-size: 12px;
+		color: gray;
+	}
+	.email
+	{
+		text-decoration: none;
+		color: gray;
+	}
+	.roleTitle
+	{
+		color: gray;
+		padding: 0px 0px 2px 0px;
+	}
+
+	/*hide duplicated time*/
+	.leftSideBar .sItem p
+	{
+		display: none;
+	}
+	.leftSideBar .sItem
+	{
+		border-bottom: none;
+	}
+
+	/*popup style*/
+	popup-detail
+	{
+		position:fixed;
+		left: 0;
+		top: 0;
+		width:75%;
+		height: 60%;
+		box-shadow: 5px 5px 16px 4px rgba(0,0,0,0.4);
+		border-radius: 10px 10px 7px 7px;
+		background:white;
+	}
+	.popupBackground
+	{
+		position:fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 99%;
+		background: rgba(0,0,0,0.4);
+		box-shadow: 0 0 10px 20px rgba(0,0,0,0.4);
+	}
+	popup-detail .close{
+		position:relative;
+		float:right;
+		border-radius:10px;
+		padding: 7px 10px;
+		cursor: pointer;
+		color: white;
+		opacity: 0.8;
+	}
+	.popupHeader
+	{
+		padding:10px 10px 10px 20px;
+		border-radius: 7px 7px 0 0;
+		background: #486784;
+		color:white;
+		font-weight: 100;
+		font-family: sans-serif;
+	}
+
+	.popupLeft
+	{
+		position:relative;
+		float:left;
+		padding: 40px;
+		width: 24%;
+	}
+	.popupRight
+	{
+		position:relative;
+		float:left;
+		padding: 15px;
+		width: 60%;
+	}
+	.memberDetailSection
+	{
+		padding:0px 10px 15px 10px;
+		width: 250px;
+	}
+	.memberDetailSection h4
+	{
+		margin: 0px;
+	}
+	.memberDetailSection .table td
+	{
+		border-top: 1px solid rgba(221, 221, 221, 0.1);
+	}
+
+	/**** angular animation css ****/
+	.shiftDetail.ng-enter, .shiftDetail.ng-leave {
+		-webkit-transition: 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+		transition: 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+	}
+	.shiftDetail.ng-enter, .shiftDetail.ng-leave.ng-leave-active {
+		-webkit-transform: translate3d(1024px, 0, 0);
+		/*left:1024px;*/
+	}
+	.shiftDetail.ng-leave, .shiftDetail.ng-enter.ng-enter-active {
+		-webkit-transform: translate3d(0, 0, 0);
+		/*left:0;*/
+	}
+
+	.slide.ng-enter, .slide.ng-leave {
+		-webkit-transition: 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+		transition: 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+	}
+	.slide.ng-enter, .slide.ng-leave.ng-leave-active {
+		-webkit-transform: translate3d(0, 1024px, 0); //left, top, z
+		/*left:1024px;*/
+	}
+	.slide.ng-leave, .slide.ng-enter.ng-enter-active {
+		-webkit-transform: translate3d(0, 0, 0);
+		/*left:0;*/
+	}
+
+
+
+	.fader-animation.ng-hide-add, 
+	.fader-animation.ng-hide-remove {
+		-webkit-transition:all linear 0.3s;
+		-moz-transition:all linear 0.3s;
+		-o-transition:all linear 0.3s;
+		transition:all linear 0.3s;
+		display:block !important;
+	}
+ 
+	.fader-animation.ng-hide-add.ng-hide-add-active,
+	.fader-animation.ng-hide-remove {
+		line-height:0;
+		opacity:0;
+	}
+ 
+	.fader-animation.ng-hide-add,
+	.fader-animation.ng-hide-remove.ng-hide-remove-active {
+		line-height:20px;
+		opacity:1;
+	}
+
+	.slideopposite-animation.ng-hide-add, 
+	.slideopposite-animation.ng-hide-remove {
+		-webkit-transition:all linear 0.3s;
+		-moz-transition:all linear 0.3s;
+		-o-transition:all linear 0.3s;
+		transition:all linear 0.3s;
+		display:block !important;
+	}
+ 
+	.slideopposite-animation.ng-hide-add.ng-hide-add-active,
+	.slideopposite-animation.ng-hide-remove {
+		line-height:0;
+		opacity:0;
+	}
+ 
+	.slideopposite-animation.ng-hide-add,
+	.slideopposite-animation.ng-hide-remove.ng-hide-remove-active {
+		line-height:20px;
+		opacity:1;
+	}
+
+	/* slide left for hide */
+	.slideopposite-animation.ng-hide-add, 
+	.slideopposite-animation.ng-hide-remove {
+		-webkit-transition:all linear 0.3s;
+		-moz-transition:all linear 0.3s;
+		-o-transition:all linear 0.3s;
+		transition:all linear 0.3s;
+		display:block !important;
+	}
+ 
+	.slideopposite-animation.ng-hide-add.ng-hide-add-active,
+	.slideopposite-animation.ng-hide-remove {
+		line-height:0;
+		opacity:0;
+	}
+ 
+	.slideopposite-animation.ng-hide-add,
+	.slideopposite-animation.ng-hide-remove.ng-hide-remove-active {
+		line-height:20px;
+		opacity:1;
+	}
+
+
+	/** Loading Animation **/
+	#pgloader{
+		display: none;    
+		position: absolute;
+		top: 330px;
+		left: 495px;
+		width: 65px;
+		height: 80px;
+	}
+	.ui-slider-track,.ui-slider-track.ui-mini
+	{
+		height: 7px;
+		width: 290px;
+	}
+	.ui-slider-track.ui-mini .ui-slider-handle {
+		height: 21px;
+		width: 21px;
+		margin: -12px 0 0 -7px;
+	}
+
+	//loading screen
+	#floatingBarsG{
+		position:relative;
+		width:62px;
+		height:77px;
+	}
+
+	.blockG{
+		position:absolute;
+		background-color:#DBDBDB;
+		width:10px;
+		height:24px;
+		-webkit-border-radius:8px 8px 0 0;
+		-webkit-transform:scale(0.4);
+		-webkit-animation-name:fadeG;
+		-webkit-animation-duration:0.72s;
+		-webkit-animation-iteration-count:infinite;
+		-webkit-animation-direction:linear;
+	}
+
+	#rotateG_01{
+		left:0;
+		top:28px;
+		-webkit-animation-delay:0.27s;
+		-webkit-transform:rotate(-90deg);
+	}
+
+	#rotateG_02{
+		left:8px;
+		top:10px;
+		-webkit-animation-delay:0.36s;
+		-webkit-transform:rotate(-45deg);
+	}
+
+	#rotateG_03{
+		left:26px;
+		top:3px;
+		-webkit-animation-delay:0.45s;
+		-webkit-transform:rotate(0deg);
+	}
+
+	#rotateG_04{
+		right:8px;
+		top:10px;
+		-webkit-animation-delay:0.54s;
+		-webkit-transform:rotate(45deg);
+	}
+
+	#rotateG_05{
+		right:0;
+		top:28px;
+		-webkit-animation-delay:0.63s;
+		-webkit-transform:rotate(90deg);
+	}
+
+	#rotateG_06{
+		right:8px;
+		bottom:7px;
+		-webkit-animation-delay:0.72s;
+		-webkit-transform:rotate(135deg);
+	}
+
+	#rotateG_07{
+		bottom:0;
+		left:26px;
+		-webkit-animation-delay:0.8099999999999999s;
+		-webkit-transform:rotate(180deg);
+	}
+
+	#rotateG_08{
+		left:8px;
+		bottom:7px;
+		-webkit-animation-delay:0.9s;
+		-webkit-transform:rotate(-135deg);
+	}
+
+	@-webkit-keyframes fadeG{
+		0%{
+		    background-color:#0052C2;
+		}
+		100%{
+	    	background-color:#DBDBDB;
+	    }
+	}
+
+
+</apex:page>

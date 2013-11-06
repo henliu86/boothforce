@@ -1,0 +1,577 @@
+<apex:page showHeader="false"  sidebar="false" standardStylesheets="false" cache="false">
+	<script type="text/javascript">
+	/**
+	*  Module
+	*
+	* -- Description --
+	* angular config, controller, and directives 
+	*/
+	
+	angular.module('boothforce', ['ngAnimate']).config(function($routeProvider){
+		/*$routeProvider
+			.when('/',{
+				templateUrl: "/AngularApp/views/ConnectionGraph.html",
+				controller: "ConnectionGraphCtrl"
+			})
+			.otherwise({
+				template:"This page does not exist!"
+			});
+		*/
+	});
+
+	angular.module('boothforce', ['ngAnimate'])
+		.controller('ShiftCtrl', function($scope, $window){
+			$scope.currentUser; //whoever is logged in
+			$scope.managerBooths = []; //all of the manager booth names
+			$scope.managerShiftTimes = []; //all of the manager shift times
+			$scope.displayBackBtn = true;
+			$scope.showShiftDetail = false;
+			$scope.days = [];
+			$scope.boothAttendees = []; //list of people working in the booth
+			$scope.selectedShift = {}; //the selected shift user click on
+			$scope.selectedShiftManager = []; //the shift managers of the selected shift
+
+			$scope.window = $window;
+			$window.getShiftList(function(result){
+				$scope.mainShiftList = result;
+				day_1 = [];
+				day_2 = [];
+				day_3 = [];
+				day_4 = [];
+				for (var i = $scope.mainShiftList.length - 1; i >= 0; i--) {
+					var ShiftTime = $scope.mainShiftList[i].Shift_Time__r;
+					var d = new Date(ShiftTime.Shift_Start_Time__c);
+					//console.log(d);
+					switch(d.getDay()){
+						case 1:
+							//Day 1
+							day_1.push($scope.mainShiftList[i]);
+						break;
+						case 2:
+							//Day 2
+							day_2.push($scope.mainShiftList[i]);
+						break;
+						case 3:
+							//Day 3
+							day_3.push($scope.mainShiftList[i]);
+						break;
+						case 4:
+							//Day 4
+							day_4.push($scope.mainShiftList[i]);
+						break;
+					}
+
+				};
+				$scope.days = [day_1, day_2, day_3, day_4];
+				//console.log($scope.days);
+				//we need to fire this to update the UI with the lists!
+				$scope.$apply();
+			});
+			$scope.getUserInfo = function(){
+				$window.getUserInfo(function(result){
+					$scope.currentUser = result;
+					$scope.$apply();
+				});
+			}
+			//get all manager booths so manager can choose which booth they want to see
+			$scope.getManagerBooths = function(){
+				$window.getManagerBooths(function(result){
+					$scope.managerBooths = [];
+					for(var i = 0; i< result.length; i++)
+					{
+						var tempBoothObj = {};
+						tempBoothObj.Id = result[i].Id;
+						tempBoothObj.Name = result[i].Name;
+						$scope.managerBooths.push(tempBoothObj);
+					}
+					$scope.$apply();
+				});
+			}
+			//get all manager shift times so managers can choose which time they want to see
+			$scope.getManagerShiftTimes = function(){
+				$window.getManagerShiftTimes(function(result){
+					//console.log(result);
+					$scope.managerShiftTimes = [];
+					for(var i = 0; i< result.length; i++)
+					{
+						var tempShiftTimeObj = {};
+						tempShiftTimeObj.Id = result[i].Id;
+						tempShiftTimeObj.Name = result[i].Name;
+						//group by day
+						tempShiftTimeObj.group = result[i].Name.substring(0,result[i].Name.indexOf(' '));
+						$scope.managerShiftTimes.push(tempShiftTimeObj);
+					}
+					$scope.$apply();
+				});
+			}
+			$scope.changeSelectedShift = function(myShift){
+				//console.log(myShift);
+				$scope.selectedShift = myShift;
+			};
+			$scope.getShiftStaff = function(){
+				//grab data from salesforce
+				//boothId,shiftTimeId,Shift_manager_booth_id__c, s.Shift_manager_shift_time_id__c,isShiftManager
+				if($scope.selectedShift == null) //if shift doesn't exist
+				{
+					$scope.boothAttendees = [];
+					$scope.$apply();
+				}
+				else //shift exist
+				{
+					$window.getShiftStaff($scope.selectedShift.Booth__c, $scope.selectedShift.Shift_Time__c, $scope.selectedShift.Shift_manager_booth_id__c, $scope.selectedShift.Shift_manager_shift_time_id__c, $scope.selectedShift.Is_Shift_Manager_Booth__c,function(result){
+						//parse detail json info here
+						//console.log(result);
+						
+						//$scope.showShiftDetail = true;
+						$scope.boothAttendees = result;
+						//console.log("boothAttendees:");
+						//console.log($scope.boothAttendees);
+						$scope.$apply();
+					});
+				}
+			};
+			$scope.getShiftStaffByBoothIdAndShiftTimeId = function(boothId, shiftTimeId){
+				$window.getShiftStaffByBoothIdAndShiftTimeId(boothId, shiftTimeId, function(result){
+					$scope.selectedShift = result[0];
+					console.log("selectedShift:");
+					console.log($scope.selectedShift);
+					//get staffs under manager
+					$scope.getShiftStaff();
+					$scope.getShiftManager($scope.selectedShift);
+				});
+			};
+
+			$scope.getShiftManager = function(myShift){
+				if($scope.selectedShift == null) //if shift doesn't exist
+					$scope.selectedShiftManager = [];
+				else //shift exist, get manager
+				{
+					$window.getShiftManager(myShift.Booth__c, myShift.Shift_Time__c, myShift.Shift_Manager_Booth_ID__c, myShift.Shift_Manager_Shift_Time_ID__c, myShift.Is_Shift_Manager_Booth__c,function(result){
+						$scope.selectedShiftManager = result;
+						console.log("shift Manager is now: ");
+						console.log(result);
+						$scope.$apply();
+					});
+				}
+			};
+			$scope.showAllYourShifts = function(){
+				$scope.showShiftDetail = false;
+			}
+			$scope.toggleCheckIn = function(myShift){
+				$window.toggleCheckIn(myShift,function(result){
+					$scope.$apply();
+				});
+			}
+
+			$scope.getUserInfo(); //get current User Info
+			$scope.getManagerBooths(); //get all manager booths
+			$scope.getManagerShiftTimes(); //get all manager shifttimes
+		})
+        .directive('shiftView', function(){
+        	// Runs during compile
+        	return {
+        		scope:{
+        			d: "=",
+        			indx: "@",
+        			showshiftdetail: "="
+        		},
+        		restrict: 'E',
+        		template: 	'<h3>{{ dayTitle[indx] }}</h3>'+
+							'<div class="shiftItemRow" ng-repeat="shiftItem in d">'+
+								'<shift-item showshiftdetail="$parent.showshiftdetail" s-item="shiftItem"></shift-item>'+
+							'</div>',
+        		link: function($scope, iElm, iAttrs) {
+        			$scope.dayTitle = ['Monday, Nov 18, 2013','Tuesday, Nov 19, 2013','Wednesday, Nov 20, 2013','Thursday, Nov 21, 2013'];
+        			if($scope.d == undefined || $scope.d == null){
+        				$scope.d = [];
+        			}
+        			//console.log($scope.d);
+        			if($scope.d.length == 0){
+        				//if there are no shifts for this day we hide it from the view
+        				//iElm.hide();
+        			}
+        		}
+        	};
+        })
+        .directive('shiftItem', function(){
+        	// Runs during compile
+        	return {
+        		scope:{
+        			sItem : "=",
+        			showshiftdetail : "="
+        		},
+        		restrict: 'E',
+        		template: 	'<div class="sItem" ng-click="openDetail()">'+
+	        					'<h5>{{sItem.Booth__r.Name}}</h5>'+
+	        					'<p id="shiftTime_{{sItem.Shift_Time__c}}"> {{ timeString }}</p>'+
+        					'</div>',
+        		link: function($scope, iElm, iAttrs) {
+        			//change all '&amp;' to '&' for all Booth name
+        			//console.log($scope.sItem.Booth__r.Name.replace(/&amp;/g,"&"));//doesn't work... javascript think it's & but in html it's &amp;
+        			//console.log($scope.sItem.Booth__r.Name.indexOf('&amp;'));
+        			//console.log('sItem: ');
+        			//console.log($scope.sItem);
+        			var startTime = new Date($scope.sItem.Shift_Time__r.Shift_Start_Time__c).toLocaleTimeString();
+        			var endTime = new Date($scope.sItem.Shift_Time__r.Shift_End_Time__c).toLocaleTimeString();
+        			//console.log(startTime);
+        			startTime = startTime.replace(' PDT','').replace(' PST','');
+        			endTime = endTime.replace(' PDT','').replace(' PST','');
+        			$scope.timeString = startTime.substring(0, startTime.length-6) + " " + startTime.substring(startTime.length-2) + " - " + endTime.substring(0, endTime.length-6) + " " +
+        			endTime.substring(endTime.length-2);
+        			// console.log(startTime);
+        			// console.log(endTime);
+        			//function that will be called when user click on a shift
+
+        			$scope.openDetail = function(){
+        				if($scope.showshiftdetail == false) //only do this if user is not in detail view
+        				{
+	        				$scope.showshiftdetail = true;
+	        				console.log('sItem:');
+	        				console.log($scope.sItem);
+	        				//console.log('show shift detail: '+$scope.showshiftdetail);
+	        				$scope.$parent.$parent.$parent.changeSelectedShift($scope.sItem);
+	        				
+	        				//if is a shift manager, then show zone name instead of booth name
+	        				if($scope.sItem.Is_Shift_Manager_Booth__c == true)
+	        				{
+	        					console.log("is Shift Manager");
+	        					//$scope.sItem.Booth__r.Name = $scope.sItem.Booth__r.Zone__c;
+	        					//console.log($scope.sItem);
+	        				}
+	        			}
+        			}
+        		}
+        	};
+        })
+        .directive('shiftDetail', function(){
+        	// Runs during compile
+        	return {
+        		// priority: 1,
+        		// terminal: true,
+        		scope: {
+        			boothattendees : "=", //boothAttendees
+        			sshift : "=", //selected Shift
+        			ssmanager : "=", //selected shift manager
+        			ssstaffs : "=", //all staffs under the shift
+        		}, // {} = isolate, true = child, false/undefined = no change
+        		// cont­rol­ler: function($scope, $element, $attrs, $transclue) {},
+        		// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+        		restrict: 'E',
+        		//transclude: true,
+        		link: function($scope, iElm, iAttrs) {
+        			//parsing json
+        			$scope.currentShift = $scope.sshift;
+        			$scope.ssstaff = {}; //selected staff when clicked on user profile pic, bind to shift-attendees and popup-detail directive
+        			$scope.showpopup = false; //show popup-detail?
+        			$scope.userfilter = {
+        									'showall': true,
+        									'checkedin': false,
+        									'boothPicklist': ['-- Show All --'],
+        									'boothSelected': null,
+                        					'managerBoothPickList': $scope.$parent.$parent.managerBooths,
+                        					'managerBoothSelected': null,
+                        					'managerShiftTimePickList': $scope.$parent.$parent.managerShiftTimes,
+                        					'managerShiftTimeSelected': null
+        								};
+					//console.log('userfilter.managerBoothSelected initial: ');
+					//console.log($scope.userfilter.managerBoothSelected);
+					$scope.$watch('userfilter.boothSelected', function(){
+						console.log('userfilter.boothSelected is now: '+ $scope.userfilter.boothSelected);
+					});
+					// Go through all the select options and get the index of current booth you on. 
+					// Doing it this way because angular selected option apparently needs to be in an array.. wtf
+					for(var i=0;i<$scope.userfilter.managerBoothPickList.length;i++)
+						if($scope.userfilter.managerBoothPickList[i].Id == $scope.currentShift.Booth__c) //if you find the index, which you always should...
+						{
+							$scope.userfilter.managerBoothSelected = $scope.userfilter.managerBoothPickList[i];
+							//console.log("FOUND BOOTHPICKLIST INDEX: " + i);
+						}
+					//same shit for managerShiftTime
+					for(var i=0;i<$scope.userfilter.managerShiftTimePickList.length;i++)
+						if($scope.userfilter.managerShiftTimePickList[i].Id == $scope.currentShift.Shift_Time__c)
+						{
+							$scope.userfilter.managerShiftTimeSelected = $scope.userfilter.managerShiftTimePickList[i];
+							//console.log("FOUND SHIFTTIMEPICKLIST INDEX: " + i);
+						}
+					$scope.selectChanged = function()
+					{
+						if($scope.userfilter.managerBoothSelected != null && $scope.userfilter.managerShiftTimeSelected != null)
+						{
+							//console.log('userfilter.managerBoothSelected is now: ');
+							//console.log($scope.userfilter.managerBoothSelected);
+							//console.log('userfilter.managerShiftTimeSelected is now: ');
+							//console.log($scope.userfilter.managerShiftTimeSelected);
+							//refresh attendees after manager booth/shiftTime has changed
+							
+							$scope.$parent.$parent.getShiftStaffByBoothIdAndShiftTimeId($scope.userfilter.managerBoothSelected.Id,$scope.userfilter.managerShiftTimeSelected.Id); 
+						}
+					}
+					//console.log($scope.currentShift.Booth__r.Name);
+        			//console.log("current shift: " );//+ $scope.currentShift.Id);
+        			//console.log($scope.currentShift);
+
+        			$scope.popupHide = function(){
+						$scope.showpopup = false;
+					}
+        		},
+        		template: 	'<div class="leftSideBar">'+
+        						'<div class="leftBarHeader"><span ng-show="!$parent.$parent.currentUser.Is_Shift_Manager__c">{{sshift.Shift_Time__r.Name}}</span></div>'+
+        						'<shift-item s-item="sshift" ng-show="!$parent.$parent.currentUser.Is_Shift_Manager__c"></shift-item>'+
+        						'<div class="managerSelectSection" ng-show="$parent.$parent.currentUser.Is_Shift_Manager__c">'+
+    								'<label>Manager Booth:</label>'+
+    								'<select ng-model="userfilter.managerBoothSelected" ng-change="selectChanged()" ng-options="managerBooth.Name for managerBooth in userfilter.managerBoothPickList">'+
+									'</select>'+
+									'<label>Manager Shift Time:</label>'+
+    								'<select ng-model="userfilter.managerShiftTimeSelected" ng-change="selectChanged()" ng-options="managerBooth.Name group by managerBooth.group for (Id,managerBooth) in userfilter.managerShiftTimePickList">'+
+									'</select>'+
+        						'</div>'+
+        						'<br/><br/>'+
+	    						'<div class="shiftManagerBox">'+
+	    							'<div class="leftBarHeader">Shift Manager(s)</div>'+
+	    							'<shift-manager ssmanager="ssmanager" selected-shift="sshift" ssstaff="ssstaff" showpopup="showpopup"></shift-manager>'+
+	    						'</div>'+
+    						'</div>'+
+    						'<div class="rightSideBar">'+
+    							'<div class="searchDiv">'+
+    								'<div class="pull-left"> Filter By:</div>'+
+    								'<label class="checkbox pull-left filterCheckbox">'+
+											'<input type="checkbox" ng-model="userfilter.showall"/>Show All'+
+									'</label>'+
+    								'<label class="checkbox pull-left filterCheckbox" ng-show="!userfilter.showall">'+
+											'<input type="checkbox" ng-model="userfilter.checkedin"/>Checked In'+
+									'</label>'+
+	    							'<form class="navbar-search pull-right">'+
+										'<input type="text" class="search-query" placeholder="Search" ng-model="searchText"/>'+
+									'</form>'+
+									'<select ng-model="userfilter.boothSelected" ng-options="boothName for boothName in userfilter.boothPicklist" class="pull-right boothSelect" ng-show="$parent.$parent.currentUser.Is_Shift_Manager__c">'+
+										'<option value="">--All Booths--</option>'+
+									'</select>'+
+								'</div>'+
+    							'<shift-attendees ssstaffs="boothattendees" ssstaff="ssstaff" currentshift="currentShift" showpopup="showpopup" searchText="searchText" userfilter="userfilter"></shift-attendees>'+
+    							'<div class="popupBackground" ng-show="showpopup" ng-click="popupHide()"/>'+ //ng-if won't render when DOM is loaded, so need ng-show
+    							'<popup-detail style="opacity:0" ssstaff="ssstaff" showpopup="showpopup" ng-show="showpopup" class="fader-animation" ng-class="fader-animation"></popup-detail>'+
+							'</div>'
+        	};
+        })
+		.directive('shiftManager', function(){
+			return {
+				restrict: 'E',
+				scope: {
+					selectedShift : "=", //passed in from controller
+					ssstaff : "=", //for selected staff on popup screen
+					ssmanager : "=",
+					showpopup : "="
+				},
+				link: function($scope, iElm, iAttrs) {
+					$scope.$parent.$parent.$parent.getShiftManager($scope.selectedShift);
+					//console.log("shift manager: ");
+					//console.log($scope.ssmanager);
+					$scope.showPopup = function(mIndex)
+					{
+						$scope.ssstaff = $scope.ssmanager[mIndex];
+						$scope.showpopup = true;
+						//console.log($scope.ssstaff);
+						$("popup-detail").css('opacity',1);
+					}
+				},
+				template : '<div class="managerDiv" ng-repeat="manager in ssmanager">'+
+								'<img class="profileImg img-circle" ng-src="{{manager.Assigned__r.SmallPhotoUrl}}" ng-click="showPopup({{$index}})"/>'+
+								'<div class="managerInfo">'+
+									'<h5 ng-click="showPopup({{$index}})">{{manager.Assigned__r.Name}}</h5>'+
+									'<h6 ng-click="showPopup({{$index}})">{{manager.Users_Role__c}}</h6>'+
+									'<a class="phone" href="tel:{{manager.Assigned__r.MobilePhone}}">{{manager.Assigned__r.MobilePhone}}</a>'+
+								'</div>'+
+							'</div>'
+			};
+		})
+		.directive('shiftAttendees', function(){
+			return {
+				restrict: 'E',
+				scope: {
+					ssstaffs: "=", // all staffs
+					ssstaff: "=", //selected staff when user click on their profile img
+					currentshift: "=", //current shift you are viewing
+					showpopup : "=",
+					searchText : "=",
+					userfilter : "="
+				},
+				link: function($scope, iElm, iAttrs) {
+					$scope.$parent.$parent.$parent.getShiftStaff(); //call controller function
+					console.log('filters: '+$scope.userfilter);
+
+					//if staffs changed, then redo the filter picklist
+					$scope.$watch('ssstaffs',function(){
+						var mapOfBoothName = {};
+						for(var i = 0; i < $scope.ssstaffs.length; i++)
+							mapOfBoothName[$scope.ssstaffs[i].Booth__r.Name] = 0;
+						//reset booth picklist
+						$scope.userfilter.boothPicklist = Object.keys(mapOfBoothName).sort();
+					});
+
+					$scope.toggleCheck = function(staffAssignmentIndex){
+						var inOrOut;
+						if($scope.ssstaffs[staffAssignmentIndex].Check_In__c == true)
+							inOrOut = 'out';
+						else
+							inOrOut = 'in';
+						if(confirm('Are you sure you want to check '+ $scope.ssstaffs[staffAssignmentIndex].Assigned__r.Name +' '+inOrOut+'?'))
+						{
+							$scope.ssstaffs[staffAssignmentIndex].Check_In__c = !$scope.ssstaffs[staffAssignmentIndex].Check_In__c;
+							//console.log('check is now: '+$scope.ssstaffs[staffAssignmentIndex].Check_In__c +' for: ');
+							//console.log($scope.ssstaffs[staffAssignmentIndex]);
+							//call controller to update checkin status
+							$scope.$parent.$parent.$parent.toggleCheckIn($scope.ssstaffs[staffAssignmentIndex]);
+						}
+					}
+					$scope.showPopup = function(staffIndex)
+					{
+						$scope.ssstaff = $scope.ssstaffs[staffIndex];
+						//console.log($scope.ssstaff);
+						$scope.showpopup = true;
+						$("popup-detail").css('opacity',1);
+					}
+				},
+				template: 	'<div class="slide" ng-repeat="ssstaff in ssstaffs | filter:$parent.searchText">'+
+								'<div class="allShiftAttendees slide" ng-if="ssstaff.Assigned__r != null '+
+																			'&& (ssstaff.Check_In__c == $parent.userfilter.checkedin || $parent.userfilter.showall) '+
+																			'&& ($parent.userfilter.boothSelected == null || ssstaff.Booth__r.Name == $parent.userfilter.boothSelected)">'+
+									'<img class="profileImg img-polaroid" ng-src="{{ssstaff.Assigned__r.SmallPhotoUrl}}" ng-click="showPopup({{$index}})"/>'+
+									'<div class="checkinDiv" ng-show="currentshift.Assigned__r.Is_Shift_Manager__c == true">'+
+										'<div class="shiftCheckBox" ng-click="toggleCheck({{$index}})">'+
+											'<img src="/resource/boothforce_check" ng-if="ssstaff.Check_In__c"/>'+
+										'</div>'+
+									'</div>'+
+									'<div class="attendeeInfo">'+
+										'<h6 ng-show="$parent.$parent.$parent.sshift.Is_Shift_Manager_Booth__c">{{ssstaff.Booth__r.Name}}</h6>'+
+										'<h5 ng-click="showPopup({{$index}})">{{ssstaff.Assigned__r.Name}}</h5>'+
+										'<h6 ng-click="showPopup({{$index}})">{{ssstaff.Users_Role__c}}</h6>'+
+										'<a class="phone" href="tel:{{ssstaff.Assigned__r.MobilePhone}}">{{ssstaff.Assigned__r.MobilePhone}}</a>'+
+										
+									'</div>'+
+								'</div>'+
+							'</div>'
+			};
+		})
+		.directive('popupDetail', function(){
+			return{
+				restrict : 'E',
+				scope : {
+					ssstaff : '=',
+					showpopup : '='
+				},
+				link : function($scope, iElm, iAttrs)
+				{
+					$("popup-detail").center();
+
+					$scope.popupHide = function(){
+						$scope.showpopup = false;
+						//console.log('x clicked, popupshow is :' + $scope.showpopup);
+					}
+				},
+				template : 	'<div class="close" ng-click="popupHide()">x</div>'+
+							'<div class="popupHeader">Member Details</div>'+
+							'<div class="popupLeft">'+
+								'<img ng-src="{{ssstaff.Assigned__r.FullPhotoUrl}}" class="img-rounded"/>'+
+							'</div>'+
+							'<div class="popupRight">'+
+								'<div class="memberDetailSection">'+
+									'<h4>{{ssstaff.Assigned__r.Name}}</h4>'+
+									'<div class="roleTitle">{{ssstaff.Users_Role__c}}</div>'+
+								'</div>'+
+								'<div class="memberDetailSection">'+
+									'<h5>Contact</h5>'+
+									'<table class="table table-condensed">'+
+										'<tr>'+
+											'<td>'+
+												'email:'+
+											'</td>'+
+											'<td>'+
+												'<a class="email" href="mailto:{{ssstaff.Assigned__r.Email}}">{{ssstaff.Assigned__r.Email}}</a>'+
+											'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td>'+
+												'phone:'+
+											'</td>'+
+											'<td>'+
+												'<a class="phone" href="tel:{{ssstaff.Assigned__r.MobilePhone}}">{{ssstaff.Assigned__r.MobilePhone}}</a>'+
+											'</td>'+
+										'</tr>'+
+											'<td>'+
+												'work:'+
+											'</td>'+
+											'<td>'+
+												'<a class="phone" href="tel:{{ssstaff.Assigned__r.Phone}}">{{ssstaff.Assigned__r.Phone}}</a>'+
+											'</td>'+
+										'</tr>'+
+									'</table>'+
+								'</div>'+
+								'<div class="memberDetailSection">'+
+									'<user-manager ssstaff="ssstaff"></user-manager>'+
+								'</div>'+
+							'</div>'
+			}
+		})
+		.directive('userManager', function($window){
+			return{
+				restrict: 'E',
+				scope: {
+					ssstaff: "="
+				},
+				link: function($scope,element,attrs){
+					$scope.manager;
+					$scope.$watch('ssstaff.Id', function() {
+						getUserManager();
+					});
+
+					var getUserManager = function(){
+						if($scope.ssstaff.Id != null) //might not have selected an user yet
+						{
+							$window.getUserManager($scope.ssstaff.Assigned__c,function(result){
+								$scope.manager = result;
+								//console.log(result);
+								$scope.$apply();
+								//console.log('manager is: ');
+								//console.log($scope.manager);
+							});
+						}
+					}
+					//$scope.$apply();
+				},
+				template: 	'<h5>Manager</h5>'+
+							'<div class="roleTitle">{{manager.Name}} <span class="badge badge-info">{{manager.UserRole.Name}}</span></div>'+
+							''+
+							'<table class="table table-condensed">'+
+								'<tr>'+
+									'<td>'+
+										'email:'+
+									'</td>'+
+									'<td>'+
+										'<a class="email" href="mailto:{{manager.Email}}">{{manager.Email}}</a>'+
+									'</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>'+
+										'phone:'+
+									'</td>'+
+									'<td>'+
+										'<a class="phone" href="tel:{{manager.MobilePhone}}">{{manager.MobilePhone}}</a>'+
+									'</td>'+
+								'</tr>'+
+									'<td>'+
+										'work:'+
+									'</td>'+
+									'<td>'+
+										'<a class="phone" href="tel:{{manager.Phone}}">{{manager.Phone}}</a>'+
+									'</td>'+
+								'</tr>'+
+							'</table>'
+			}
+		});
+		
+	
+
+
+
+	</script>
+</apex:page>

@@ -1,0 +1,217 @@
+<apex:page controller="Boothforce_MobileController" showHeader="false"  sidebar="false" standardStylesheets="false" cache="false">
+    <script type="text/javascript">
+    
+        function getUserInfo(callback){
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchMyUserInfo}', '{!$User.Id}' , function(result, event) {
+                if (event.status) {
+                    //result will be an User
+                    callback(result);
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in Fetching User Info - " + event.message);
+                }
+            }, {escape: true});
+
+        }
+
+        /*
+            Purpose: Front-end method to get a list of Shift Assignments for the current User
+            Paramters: none
+            --Remote method takes the userId as a parameter
+            Returns: Void
+
+            Sample Result looks like this!
+            0: Object
+                Id: "a1230000001iZlKAAU"
+                Shift_Start_Date_short__c: "9/18"
+                Shift_Time__c: "a1130000000jjy3AAA"
+                Shift_Time__r: Object
+                    Id: "a1130000000jjy3AAA"
+                    Name: "Tuesday 6pm-8pm"
+                    Shift_End_Time__c: 1348023600000 //this is time in milliseconds, can use the browsers Date(millisecond) function to convert into a Date
+                    Shift_Start_Time__c: 1348016400000  
+        */
+        function getShiftList(callback){
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchMyShifts}', '{!$User.Id}' , function(result, event) {
+                if (event.status) {
+                    //result will be an array of Shift_Assignments
+                    callback(result);
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in Fetching shifts - " + event.message);
+                }
+            }, {escape: true});
+        }
+
+        /*
+            Purpose: Front-end method to get the Shift STAFF for a selected shift
+                     If you are a manager for the shift, then return list of staffing assignment under you
+            Paramters: boothId,shifttimeId, shift_manager_booth_id__c, Shift_manager_shift_time_id__c
+            Returns: Void
+        */
+        function getShiftStaff(boothId, shiftTimeId, managerBoothId, managerShiftTimeId, isShiftManager, callback){
+            var params;
+            //Check if the field was filled out or not.
+            if(boothId == null)
+                boothId = '';
+            else
+                boothId = boothId.substring(0,boothId.length-3);
+            
+            if(shiftTimeId == null)
+                shiftTimeId = '';
+            else
+                shiftTimeId = shiftTimeId.substring(0,shiftTimeId.length-3);
+            
+            if(isShiftManager == null )
+                isShiftManager = 'false';
+            
+            if(managerBoothId == null)
+                managerBoothId = '';
+            else
+                managerBoothId = managerBoothId.substring(0,managerBoothId.length-3);
+            
+            if(managerShiftTimeId == null)
+                managerShiftTimeId = '';
+            else
+                managerShiftTimeId = managerShiftTimeId.substring(0,managerShiftTimeId.length-3);
+            
+            params = [boothId,shiftTimeId,managerBoothId,managerShiftTimeId,isShiftManager];
+            //console.log('!!!!!!getShiftStaff params');
+            //console.log(params);
+            showLoadingCss();
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchShiftStaff}', params , function(result, event) {
+                if (event.status) {
+                    //result will be an array of Shift_Assignments
+                    //console.log(result);
+                    callback(result);
+                    hideLoadingCss();
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in Fetching shifts - " + event.message);
+                }
+            }, {escape: true});     
+        }
+        //input: manager's boothId and ShiftTimeId
+        //return manager's shift
+        function getShiftStaffByBoothIdAndShiftTimeId(boothId, shiftTimeId, callback){
+            var params;
+            //Check if the field was filled out or not.
+            if(boothId == null)
+                boothId = '';
+            if(shiftTimeId == null)
+                shiftTimeId = '';
+            var managerBoothId ='';
+            var managerShiftTimeId = ''; // don't need these
+            isShiftManager = false; //always false so you can grab your own shift instead of people under you
+            params = [boothId,shiftTimeId,managerBoothId,managerShiftTimeId,isShiftManager];
+            //console.log('params');
+            //console.log(params);
+            showLoadingCss();
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchShiftStaff}', params , function(result, event) {
+                if (event.status) {
+                    //result will be an array of Shift_Assignments
+                    //console.log(result);
+                    callback(result);
+                    hideLoadingCss();
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in Fetching shifts - " + event.message);
+                }
+            }, {escape: true});     
+        }
+
+
+
+        function getShiftManager(boothId, shiftTimeId, managerBoothId, managerShiftTimeId, isShiftManager, callback)
+        {
+            var params;
+            //Check if the field was filled out or not.
+            if(isShiftManager == null )
+                isShiftManager = 'false';
+            if(managerBoothId == null)
+                managerBoothId = '';
+            if(managerShiftTimeId == null)
+                managerShiftTimeId = '';
+            params = [boothId,shiftTimeId,managerBoothId,managerShiftTimeId,isShiftManager];
+            console.log("param for get shift manager");
+            console.log(params);
+
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchShiftManager}',params, function(result,event){
+                if (event.status) {
+                    //result will be Shift_Assignments
+                    //console.log(result);
+                    callback(result);
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in Fetching shift manager - " + event.message);
+                }
+            }, {escape: true});
+        }
+        
+        function toggleCheckIn(staff, callback)
+        {
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.toggleCheckIn}',staff.Id, function(result,event){
+                if (event.status) {
+                    //result will be Shift_Assignments
+                    //console.log(result);
+                    callback(result);
+                } else if (event.type === 'exception') {
+                    console.log("Exceptin in toggling checkin for selected shift - " + event.message);
+                }
+            }, {escape: true});
+        }
+
+        function getUserManager(userId, callback)
+        {
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchUserManager}',userId, function(result,event){
+                //console.log('inside you');
+                if(event.status){
+                    callback(result);
+                } else if(event.type ==='exception'){
+                    console.log("Exception trying to get User Manager - " + event.message);
+                }
+
+            }, {escape: true});
+        }
+
+        function getManagerBooths(callback)
+        {
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchManagerBooths}', function(result,event){
+                //console.log('inside you');
+                if(event.status){
+                    callback(result);
+                } else if(event.type ==='exception'){
+                    console.log("Exception trying to get List of Manager Booths - " + event.message);
+                }
+
+            }, {escape: true});
+        }
+
+        function getManagerShiftTimes(callback)
+        {
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchManagerShiftTimes}', function(result,event){
+                //console.log('inside you');
+                if(event.status){
+                    callback(result);
+                } else if(event.type ==='exception'){
+                    console.log("Exception trying to get List of Manager Shift Times - " + event.message);
+                }
+
+            }, {escape: true});
+        }
+
+        /****** jquery center function *********/
+        jQuery.fn.center = function () {
+            //this.css("position","absolute");
+            this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
+            this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+            return this;
+        }
+
+        function showLoadingCss()
+        {
+            $("#pgloader").center();
+            $("#pgloader").show();
+        }
+        function hideLoadingCss()
+        {
+            $("#pgloader").hide();
+        }
+        
+    </script>
+</apex:page>
