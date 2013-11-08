@@ -32,6 +32,7 @@
 			$scope.selectedShiftManager = []; //the shift managers of the selected shift
 
 			$scope.window = $window;
+			showLoadingCss();
 			$window.getShiftList(function(result){
 				$scope.mainShiftList = result;
 				day_1 = [];
@@ -88,19 +89,24 @@
 				});
 			}
 			//get all manager shift times so managers can choose which time they want to see
-			$scope.getManagerShiftTimes = function(){
-				$window.getManagerShiftTimes(function(result){
+			$scope.getManagerShiftTimes = function(managerBoothId, setShiftTimeFilterPickList){
+				//console.log(setShiftTimeFilterPickList);
+				$window.getManagerShiftTimes(managerBoothId,function(result){
 					//console.log(result);
 					$scope.managerShiftTimes = [];
-					for(var i = 0; i< result.length; i++)
-					{
-						var tempShiftTimeObj = {};
-						tempShiftTimeObj.Id = result[i].Id;
-						tempShiftTimeObj.Name = result[i].Name;
-						//group by day
-						tempShiftTimeObj.group = result[i].Name.substring(0,result[i].Name.indexOf(' '));
-						$scope.managerShiftTimes.push(tempShiftTimeObj);
-					}
+					if(result != null)
+						for(var i = 0; i< result.length; i++)
+						{
+							var tempShiftTimeObj = {};
+							tempShiftTimeObj.Id = result[i].Id;
+							tempShiftTimeObj.Name = result[i].Name;
+							//group by day
+							tempShiftTimeObj.group = result[i].Name.substring(0,result[i].Name.indexOf(' '));
+							$scope.managerShiftTimes.push(tempShiftTimeObj);
+						}
+					//console.log("manager shift time options: ");
+					//console.log($scope.managerShiftTimes);
+					setShiftTimeFilterPickList($scope.managerShiftTimes); //callback function from
 					$scope.$apply();
 				});
 			}
@@ -130,14 +136,14 @@
 					});
 				}
 			};
-			$scope.getShiftStaffByBoothIdAndShiftTimeId = function(boothId, shiftTimeId){
-				$window.getShiftStaffByBoothIdAndShiftTimeId(boothId, shiftTimeId, function(result){
+			$scope.getShiftStaffByBoothIdAndShiftTimeId = function(booth, shiftTime){
+				$window.getShiftStaffByBoothIdAndShiftTimeId(booth.Id, shiftTime.Id, function(result){
 					$scope.selectedShift = result[0];
 					console.log("selectedShift:");
 					console.log($scope.selectedShift);
 					//get staffs under manager
 					$scope.getShiftStaff();
-					$scope.getShiftManager($scope.selectedShift);
+					$scope.selectedShiftManager = [$scope.selectedShift];
 				});
 			};
 
@@ -165,7 +171,9 @@
 
 			$scope.getUserInfo(); //get current User Info
 			$scope.getManagerBooths(); //get all manager booths
-			$scope.getManagerShiftTimes(); //get all manager shifttimes
+			//get all manager shifttimes, pass in an empty function that does nothing since we don't need to set shifttime yet
+			$scope.getManagerShiftTimes(null,function(fake){}); 
+			
 		})
         .directive('shiftView', function(){
         	// Runs during compile
@@ -282,28 +290,64 @@
 					// Doing it this way because angular selected option apparently needs to be in an array.. wtf
 					for(var i=0;i<$scope.userfilter.managerBoothPickList.length;i++)
 						if($scope.userfilter.managerBoothPickList[i].Id == $scope.currentShift.Booth__c) //if you find the index, which you always should...
-						{
 							$scope.userfilter.managerBoothSelected = $scope.userfilter.managerBoothPickList[i];
-							//console.log("FOUND BOOTHPICKLIST INDEX: " + i);
-						}
 					//same shit for managerShiftTime
+					if($scope.userfilter.managerBoothSelected != null)
+					{	
+						//refresh all manager shifttimes
+						$scope.$parent.$parent.getManagerShiftTimes($scope.userfilter.managerBoothSelected.Id, function(newShiftTimesPicklist){
+							//refresh userfilter's manager shift timee picklist
+							$scope.userfilter.managerShiftTimePickList = newShiftTimesPicklist;
+							for(var i=0;i<$scope.userfilter.managerShiftTimePickList.length;i++)
+								if($scope.userfilter.managerShiftTimePickList[i].Id == $scope.currentShift.Shift_Time__c)
+									$scope.userfilter.managerShiftTimeSelected = $scope.userfilter.managerShiftTimePickList[i];
+						});
+					}
+
+					/*
 					for(var i=0;i<$scope.userfilter.managerShiftTimePickList.length;i++)
 						if($scope.userfilter.managerShiftTimePickList[i].Id == $scope.currentShift.Shift_Time__c)
-						{
 							$scope.userfilter.managerShiftTimeSelected = $scope.userfilter.managerShiftTimePickList[i];
-							//console.log("FOUND SHIFTTIMEPICKLIST INDEX: " + i);
-						}
+					*/
+					/*
+					$scope.userfilter.managerBoothSelected = {'Name': $scope.currentShift.Booth__r.Name, 'Id':$scope.currentShift.Booth__c};
+					$scope.userfilter.managerShiftTimeSelected = {'Name': $scope.currentShift.Shift_Time__r.Name, 'Id':$scope.Shift_Time__c};
+					*/
+
 					$scope.selectChanged = function()
 					{
+						//manager booth is selected and has changed
+						console.log("manager booth selected has changed");
+						if($scope.userfilter.managerBoothSelected != null)
+						{	
+							//refresh all manager shifttimes
+							$scope.$parent.$parent.getManagerShiftTimes($scope.userfilter.managerBoothSelected.Id, function(newShiftTimesPicklist){
+								//refresh userfilter's manager shift timee picklist
+								$scope.userfilter.managerShiftTimePickList = newShiftTimesPicklist;
+								//setting selected option needs to use the list, so go through the picklist array
+								for(var i=0;i<$scope.userfilter.managerShiftTimePickList.length;i++)
+									//already picked a shift time and same shifttime name
+									if($scope.userfilter.managerShiftTimeSelected != null && $scope.userfilter.managerShiftTimePickList[i].Name == $scope.userfilter.managerShiftTimeSelected.Name) 
+										$scope.userfilter.managerShiftTimeSelected = $scope.userfilter.managerShiftTimePickList[i];
+								//get shift staffs after $scope.userfilter.managerShiftTimeSelected is updated
+								if($scope.userfilter.managerBoothSelected != null && $scope.userfilter.managerShiftTimeSelected != null)
+								{
+									console.log('userfilter.managerBoothSelected is now: ');
+									console.log($scope.userfilter.managerBoothSelected);
+									console.log('userfilter.managerShiftTimeSelected is now: ');
+									console.log($scope.userfilter.managerShiftTimeSelected);
+									//refresh attendees after manager booth/shiftTime has changed
+									$scope.$parent.$parent.getShiftStaffByBoothIdAndShiftTimeId($scope.userfilter.managerBoothSelected,$scope.userfilter.managerShiftTimeSelected); 
+								}
+							});
+						}
+					}
+					$scope.selectChangedShiftTime = function()
+					{
+						console.log("manager shift time selected has changed");
 						if($scope.userfilter.managerBoothSelected != null && $scope.userfilter.managerShiftTimeSelected != null)
 						{
-							//console.log('userfilter.managerBoothSelected is now: ');
-							//console.log($scope.userfilter.managerBoothSelected);
-							//console.log('userfilter.managerShiftTimeSelected is now: ');
-							//console.log($scope.userfilter.managerShiftTimeSelected);
-							//refresh attendees after manager booth/shiftTime has changed
-							
-							$scope.$parent.$parent.getShiftStaffByBoothIdAndShiftTimeId($scope.userfilter.managerBoothSelected.Id,$scope.userfilter.managerShiftTimeSelected.Id); 
+							$scope.$parent.$parent.getShiftStaffByBoothIdAndShiftTimeId($scope.userfilter.managerBoothSelected,$scope.userfilter.managerShiftTimeSelected); 
 						}
 					}
 					//console.log($scope.currentShift.Booth__r.Name);
@@ -315,14 +359,16 @@
 					}
         		},
         		template: 	'<div class="leftSideBar">'+
-        						'<div class="leftBarHeader"><span ng-show="!$parent.$parent.currentUser.Is_Shift_Manager__c">{{sshift.Shift_Time__r.Name}}</span></div>'+
+        						'<div class="leftBarHeader">'+
+        							'<span ng-show="boothattendees.length > 0">{{boothattendees[0].Shift_Time__r.Name}}</span>'+
+        						'</div>'+
         						'<shift-item s-item="sshift" ng-show="!$parent.$parent.currentUser.Is_Shift_Manager__c"></shift-item>'+
         						'<div class="managerSelectSection" ng-show="$parent.$parent.currentUser.Is_Shift_Manager__c">'+
     								'<label>Manager Booth:</label>'+
     								'<select ng-model="userfilter.managerBoothSelected" ng-change="selectChanged()" ng-options="managerBooth.Name for managerBooth in userfilter.managerBoothPickList">'+
 									'</select>'+
 									'<label>Manager Shift Time:</label>'+
-    								'<select ng-model="userfilter.managerShiftTimeSelected" ng-change="selectChanged()" ng-options="managerBooth.Name group by managerBooth.group for (Id,managerBooth) in userfilter.managerShiftTimePickList">'+
+    								'<select ng-model="userfilter.managerShiftTimeSelected" ng-change="selectChangedShiftTime()" ng-options="managerBooth.Name group by managerBooth.group for (Id,managerBooth) in userfilter.managerShiftTimePickList">'+
 									'</select>'+
         						'</div>'+
         						'<br/><br/>'+

@@ -1,0 +1,665 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Shift",
+				"Shift_Time__r"
+			],
+			[
+				"temp",
+				"tempShiftTimeObj"
+			],
+			[
+				"head",
+				"headerValue	(String)"
+			],
+			[
+				"ac",
+				"action	(ApexPages.Action)"
+			],
+			[
+				"pageBl",
+				"apex:pageBlockTable"
+			],
+			[
+				"output",
+				"apex:outputPanel"
+			],
+			[
+				"Zon",
+				"Zone__c"
+			],
+			[
+				"booth",
+				"boothPicklist"
+			],
+			[
+				"is",
+				"Is_Shift_Manager_Booth__c"
+			],
+			[
+				"showall",
+				"showall"
+			],
+			[
+				"Ch",
+				"Check_In__c"
+			],
+			[
+				"my",
+				"myscopemanagerVarible"
+			],
+			[
+				"mana",
+				"Manager"
+			],
+			[
+				"Staffing",
+				"Staffing_Assignment__c"
+			],
+			[
+				"Staff",
+				"Staffing_Assignment__c"
+			],
+			[
+				"showshift",
+				"showshiftdetail"
+			],
+			[
+				"m",
+				"module"
+			],
+			[
+				"Boo",
+				"Booth__c"
+			],
+			[
+				"shift",
+				"Shift_Time__c"
+			],
+			[
+				"se",
+				"selectedShift"
+			],
+			[
+				"shi",
+				"shiftItem"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/pages/Boothforce_Mobile.page",
+			"settings":
+			{
+				"buffer_size": 4319,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/Boothforce_Mobile_AngularApp.page",
+			"settings":
+			{
+				"buffer_size": 23353,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/boothforce_mobile_backend.page",
+			"settings":
+			{
+				"buffer_size": 10008,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/classes/Boothforce_MobileController.cls",
+			"settings":
+			{
+				"buffer_size": 6717,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/Boothforce_Mobile_CSS.page",
+			"settings":
+			{
+				"buffer_size": 10414,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/henry.liu/Documents/workspace/work.com SDO/src/classes/UserNode.cls",
+		"/Users/henry.liu/Documents/workspace/work.com SDO/src/classes/ConsoleDBLookup.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_OneStop.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/components/SiteLogin.component",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/SiteLoginController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/SiteLogin.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BFCheckinAppCSS.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BFCheckins.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/Boothforce_Mobile.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_StaffingPage.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_BoothListingController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_BoothListingPage.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_js.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_StaffingPageController_MO.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/Boothforce_MobileController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/boothforce_mobile_backend.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_ReallocBoothListingPage.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_ReallocationPage.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_MyBooths.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_MyBoothsController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_StaffingList.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_StaffingPageController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BFCheckinAppPortrait.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/Boothforce_Mobile_AngularApp.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_ReallocationPage.page-meta.xml",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_ReallocationPageController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_PickUpUnwantedShiftController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_PickUpUnwantedShifts.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_css.page",
+		"/Users/henry.liu/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BFCheckins.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/AreaWithZones.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/Boothforce_Mobile_CSS.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/Boothforce_Mobile_AngularApp.page-meta.xml",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_ManagerViewController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/BoothForce_SetupShiftsController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/Boothforce_ShiftCountController.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_PickUpUnwantedShifts.page-meta.xml",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_SetupShifts.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/Boothforce_Dataload_Ctrl.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothforceDataLoadPage.page",
+		"/Users/henry.liu/Documents/workspace/work.com SDO/src/pages/TeamPage.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/pages/BoothForce_ManagerView.page",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/classes/AccountHierarchyTestData.cls",
+		"/Users/henry.liu/Documents/workspace/Boothforce/src/documents/CustomerPortalImages/CustomerPortalFooterHTML.html",
+		"/Users/henry.liu/Documents/workspace/Ralph Eddy Org/src/components/EventTimeline.component-meta.xml",
+		"/Users/henry.liu/Documents/workspace/Ralph Eddy Org/src/classes/checkInController.cls"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"oyster",
+			"sshift",
+			"shiftManager",
+			"getShiftManager",
+			"console.log('userfilter.managerShiftTimeSelected is now: ');\n							console.log($scope.userfilter.managerShiftTimeSelected);",
+			"boothSelect",
+			"selectedShiftManager",
+			"boothAttendees",
+			"ssstaffs",
+			"getShiftStaffByBoothIdAndShiftTimeId",
+			"managerShiftTimeIdSelected",
+			"managerBoothNameSelected",
+			"sItem",
+			"getShiftStaff",
+			"selectedShift",
+			"changeSelectedShift",
+			"watch",
+			"changeSelectedShift",
+			"boothSelected",
+			"searchText",
+			"FullPhotoUrl",
+			"managerBooths",
+			"getShiftStaff",
+			"selectedShift",
+			"slideopposite",
+			"slide",
+			"getShiftStaff",
+			"$scope.$parent",
+			"$scope.parent",
+			"getShiftManager",
+			".panel-heading",
+			".panel",
+			".profilePicDiv {",
+			".badge",
+			"myGoalContainer",
+			"Name",
+			"getTeamUserGoals",
+			"profilePicOf",
+			"boss",
+			"14px",
+			"focusedUser",
+			"backBtn",
+			"assign(",
+			"alert",
+			"getReallocBoothSignup",
+			"waitListShift",
+			"addToWaitList",
+			".timeTable",
+			"++",
+			"parseDate",
+			"&",
+			"<!--",
+			"*****",
+			"zone",
+			"display: none;",
+			"display",
+			"boothStaffing",
+			"data",
+			"opacity",
+			"floatingBarsG",
+			"pgloader",
+			"setupAreaWithZonesList",
+			"me.User",
+			"signUpAjax",
+			"invalidUserSelected",
+			"assign(",
+			"assign",
+			"signUp",
+			"number_of_staffing_assignments__c",
+			"userToUpdate",
+			"signup",
+			"noOverlapCheck",
+			"signUp",
+			"shiftManagerContainer",
+			"shift-view",
+			"ng-show",
+			"select",
+			"is",
+			"apexRefresh",
+			"boothStaffingContainer",
+			"boothStaffing",
+			"boothStaffingContainer",
+			"pickBooths",
+			"myBoothsContainer",
+			"up for",
+			"getShiftStaff",
+			"waitListShift",
+			"myBoothsContainer",
+			"myBooths",
+			"getShiftStaff",
+			".managerDi",
+			"sitem",
+			"attendeeInfo",
+			"mytitle",
+			"profileImg",
+			"managerDiv",
+			"getShiftManager",
+			"selectedShiftManager",
+			"daysCol",
+			"shiftItemRow",
+			"getShiftStaff",
+			"displayBackBtn",
+			"shiftItem",
+			"boothAttendees[0]",
+			"shiftView",
+			">\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"managerShiftTimeSelected",
+			"managerBoothSelected",
+			"SmallPhotoUrl",
+			"focusedUser",
+			"currentShift"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/pages/Boothforce_Mobile.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4319,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								4319
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 535.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/pages/Boothforce_Mobile_AngularApp.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23353,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12903,
+								12904
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4483.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/pages/boothforce_mobile_backend.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10008,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								10008
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1185.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/classes/Boothforce_MobileController.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6717,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								6717
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 221.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/pages/Boothforce_Mobile_CSS.page",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10414,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								10414
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1006.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.MavensMate-OutputPanel":
+	{
+		"height": 100.0
+	},
+	"project": "boothforcemobile.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"css",
+				"src/pages/Boothforce_Mobile_CSS.page"
+			],
+			[
+				"mobilecss",
+				"src/pages/Boothforce_Mobile_CSS.page"
+			],
+			[
+				"boothforce_mobile",
+				"src/classes/Boothforce_MobileController.cls"
+			],
+			[
+				"back",
+				"src/pages/boothforce_mobile_backend.page"
+			],
+			[
+				"userno",
+				"src/classes/UserNode.cls"
+			],
+			[
+				"team",
+				"src/classes/TeamController.cls"
+			],
+			[
+				"one",
+				"src/pages/BoothForce_OneStop.page"
+			],
+			[
+				"login",
+				"src/classes/SiteLoginController.cls"
+			],
+			[
+				"boothforce_boothlistingcontroller",
+				"src/classes/BoothForce_BoothListingController.cls"
+			],
+			[
+				"boothforce_set",
+				"src/pages/BoothForce_SetupShifts.page"
+			],
+			[
+				"boothforce_setupshifts",
+				"src/pages/BoothForce_SetupShifts.page"
+			],
+			[
+				"mybooth",
+				"src/pages/BoothForce_MyBooths.page"
+			],
+			[
+				"staffingpage",
+				"src/pages/BoothForce_StaffingPage.page"
+			],
+			[
+				"boothforce_mo",
+				"src/pages/Boothforce_Mobile.page"
+			],
+			[
+				"boothforcedata",
+				"src/pages/BoothforceDataLoadPage.page"
+			],
+			[
+				"boothforce_data",
+				"src/classes/Boothforce_Dataload_Ctrl.cls"
+			],
+			[
+				"boothforce_staffingpagecontroller",
+				"src/classes/BoothForce_StaffingPageController.cls"
+			],
+			[
+				"realloca",
+				"src/classes/BoothForce_ReallocationPageController.cls"
+			],
+			[
+				"managervew",
+				"src/classes/BoothForce_ManagerViewController.cls"
+			],
+			[
+				"manager",
+				"src/pages/BoothForce_ManagerView.page"
+			],
+			[
+				"org",
+				"src/classes/OrgHierarchyCtrl.cls"
+			],
+			[
+				"bfcheckins",
+				"src/classes/BFCheckins.cls"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 132.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

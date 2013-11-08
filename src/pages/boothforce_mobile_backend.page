@@ -31,10 +31,12 @@
                     Shift_Start_Time__c: 1348016400000  
         */
         function getShiftList(callback){
+            showLoadingCss();
             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchMyShifts}', '{!$User.Id}' , function(result, event) {
                 if (event.status) {
                     //result will be an array of Shift_Assignments
                     callback(result);
+                    hideLoadingCss();
                 } else if (event.type === 'exception') {
                     console.log("Exceptin in Fetching shifts - " + event.message);
                 }
@@ -83,6 +85,13 @@
                     //console.log(result);
                     callback(result);
                     hideLoadingCss();
+                    //set height for shiftDetail after ssstaffs changed
+                    setTimeout(function(){
+                        if($(".rightSideBar").height() < 704)
+                            $(".shiftDetail").css("min-height",704);
+                        else
+                            $(".shiftDetail").css("min-height",$(".rightSideBar").height()+50);
+                    }, 500);
                 } else if (event.type === 'exception') {
                     console.log("Exceptin in Fetching shifts - " + event.message);
                 }
@@ -182,11 +191,12 @@
             }, {escape: true});
         }
 
-        function getManagerShiftTimes(callback)
+        function getManagerShiftTimes(managerBoothId, callback)
         {
-            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchManagerShiftTimes}', function(result,event){
-                //console.log('inside you');
+            //console.log('inside get manager shift time of area: ' + managerBoothId);
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchManagerShiftTimes}', managerBoothId, function(result,event){
                 if(event.status){
+                    //console.log(result);
                     callback(result);
                 } else if(event.type ==='exception'){
                     console.log("Exception trying to get List of Manager Shift Times - " + event.message);

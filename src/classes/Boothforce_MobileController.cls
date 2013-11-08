@@ -48,7 +48,7 @@ global class Boothforce_MobileController {
 	                		s.Assigned__r.Email, s.Assigned__r.Name, s.Assigned__c, s.Assigned__r.SmallPhotoURL,
 			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, 
 			            	s.Booth__r.Zone__c, s.Booth__r.Area_Zone__c, s.Booth__r.Name, s.Users_Role__c,
-			            	s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c
+			            	s.Shift_Time__r.Name, s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c
 		                From Staffing_Assignment__c s
 		                Where s.Shift_manager_booth_id__c = :myParams[0]
 		                AND s.Shift_manager_shift_time_id__c = :myParams[1]
@@ -62,7 +62,7 @@ global class Boothforce_MobileController {
 	                		s.Assigned__r.Email, s.Assigned__r.Name, s.Assigned__c, s.Assigned__r.SmallPhotoURL,
 			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, 
 			            	s.Booth__r.Zone__c, s.Booth__r.Area_Zone__c, s.Booth__r.Name, s.Users_Role__c,
-			            	s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c,
+			            	s.Shift_Time__r.Name, s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c,
 			            	s.Shift_manager_booth_id__c, s.Shift_manager_shift_time_id__c
 		                From Staffing_Assignment__c s
 		                Where s.Booth__c = :myParams[0]
@@ -142,11 +142,22 @@ global class Boothforce_MobileController {
 	}
 
 	@RemoteAction
-	public static List<Shift_Time__c> fetchManagerShiftTimes(){
-		List<Shift_Time__c> managersShiftTime = [ 	SELECT id, name, Shift_Start_Time__c, Shift_End_Time__c
-													FROM Shift_Time__c 
-													WHERE Is_Manager_Shift_Time__c = true
-													ORDER BY Shift_Start_Time__c ASC];
+	public static List<Shift_Time__c> fetchManagerShiftTimes(String managerBoothId){
+		List<Shift_Time__c> managersShiftTime;
+		if(managerBoothId == null) //if no booth area specified
+			managersShiftTime = [ 	SELECT id, name, Shift_Start_Time__c, Shift_End_Time__c
+									FROM Shift_Time__c 
+									WHERE Is_Manager_Shift_Time__c = true
+									ORDER BY Shift_Start_Time__c ASC];
+		else //get shiftTime in booth's area
+		{	
+			Booth__c b = [SELECT Area_Zone__c FROM Booth__c WHERE Id = :managerBoothId];
+			managersShiftTime = [ 	SELECT id, name, Shift_Start_Time__c, Shift_End_Time__c
+									FROM Shift_Time__c 
+									WHERE Area_Zone__c = :b.Area_Zone__c
+									AND Is_Manager_Shift_Time__c = true
+									ORDER BY Shift_Start_Time__c ASC];
+		}
 		if(managersShiftTime.isEmpty())
 			return null;
 		else
