@@ -17,7 +17,7 @@ global class Boothforce_MobileController {
 	public static List<Staffing_Assignment__c> fetchMyShifts(String userId){
 		List<Staffing_Assignment__c> lsa = new List<Staffing_Assignment__c>();
 		//we go look in the Staffing Assignments and find the shifts this user is staffing
-		lsa = [ Select s.Id, s.Shift_Time__r.Shift_End_Time__c, s.Is_Shift_Manager_Booth__c, 
+		lsa = [ Select s.Id, s.Shift_Time__r.Shift_End_Time__c, s.Is_Shift_Manager_Booth__c,  
 					s.Assigned__r.Is_Shift_Manager__c,s.Assigned__r.MobilePhone, s.Assigned__r.Phone, s.Assigned__r.FullPhotoURL, 
         			s.Assigned__r.Email, s.Assigned__r.Name, s.Assigned__c, s.Assigned__r.SmallPhotoURL,
 					s.Shift_Time__r.Shift_Start_Time__c, s.Shift_Time__c, s.Shift_Start_Date_short__c, s.Users_Role__c,
@@ -46,7 +46,7 @@ global class Boothforce_MobileController {
 			//find fellow staffers
 			lsa = 	[	Select s.Id, s.Assigned__r.MobilePhone, s.Assigned__r.Phone, s.Assigned__r.FullPhotoURL, 
 	                		s.Assigned__r.Email, s.Assigned__r.Name, s.Assigned__c, s.Assigned__r.SmallPhotoURL,
-			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, 
+			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, s.LastModifiedDate,
 			            	s.Booth__r.Zone__c, s.Booth__r.Area_Zone__c, s.Booth__r.Name, s.Users_Role__c,
 			            	s.Shift_Time__r.Name, s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c
 		                From Staffing_Assignment__c s
@@ -60,7 +60,7 @@ global class Boothforce_MobileController {
 			//find fellow staffers
 			lsa = 	[	Select s.Id, s.Assigned__r.MobilePhone, s.Assigned__r.Phone, s.Assigned__r.FullPhotoURL, 
 	                		s.Assigned__r.Email, s.Assigned__r.Name, s.Assigned__c, s.Assigned__r.SmallPhotoURL,
-			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, 
+			                s.Check_In__c, s.Is_Shift_Manager_Booth__c, s.LastModifiedDate,
 			            	s.Booth__r.Zone__c, s.Booth__r.Area_Zone__c, s.Booth__r.Name, s.Users_Role__c,
 			            	s.Shift_Time__r.Name, s.Shift_Time__r.Shift_End_Time__c, s.Shift_Time__r.Shift_Start_Time__c,s.Shift_Start_Date_short__c,
 			            	s.Shift_manager_booth_id__c, s.Shift_manager_shift_time_id__c

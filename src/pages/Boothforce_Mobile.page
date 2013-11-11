@@ -98,6 +98,16 @@
 		<apex:include pageName="boothforce_mobile_backend"></apex:include>
 		<apex:include pageName="Boothforce_Mobile_AngularApp"></apex:include>
 		<script>
+		$(document).ready(function(){
+			window.addEventListener("orientationchange", function(e) {
+	          	// Announce the new orientation number
+                //alert(window.orientation);
+	    		//window.orientation = "0";
+                fixShiftDetailHeight();
+        	}, false);
+		});
+
+			/*
 			function goToDarshil()
 			{
 				$("#henryApp").hide();
@@ -107,7 +117,7 @@
 			{
 				$("#henryApp").show();
 				$("#darshilApp").hide();
-			}
+			}*/
 		</script>
 	</body>
 </apex:page>

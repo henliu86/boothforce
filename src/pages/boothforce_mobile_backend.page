@@ -1,6 +1,10 @@
 <apex:page controller="Boothforce_MobileController" showHeader="false"  sidebar="false" standardStylesheets="false" cache="false">
     <script type="text/javascript">
-    
+        /*******************************************
+        * this page has all the global javascript
+        * functions.
+        *
+        *******************************************/
         function getUserInfo(callback){
             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchMyUserInfo}', '{!$User.Id}' , function(result, event) {
                 if (event.status) {
@@ -87,10 +91,7 @@
                     hideLoadingCss();
                     //set height for shiftDetail after ssstaffs changed
                     setTimeout(function(){
-                        if($(".rightSideBar").height() < 704)
-                            $(".shiftDetail").css("min-height",704);
-                        else
-                            $(".shiftDetail").css("min-height",$(".rightSideBar").height()+50);
+                        fixShiftDetailHeight();
                     }, 500);
                 } else if (event.type === 'exception') {
                     console.log("Exceptin in Fetching shifts - " + event.message);
@@ -210,6 +211,7 @@
             //this.css("position","absolute");
             this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
             this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
+            console.log("center!");
             return this;
         }
 
@@ -223,5 +225,19 @@
             $("#pgloader").hide();
         }
         
+        function convertSalesforceDateTime(dateTime)
+        {
+            //console.log(dateTime);
+            var result = new Date(dateTime).toLocaleString();//toLocaleTimeString();
+            return result.replace(' PDT','').replace(' PST','');
+        }
+
+        function fixShiftDetailHeight()
+        {
+            if($(".rightSideBar").height() < 704)
+                $(".shiftDetail").css("min-height",704);
+            else
+                $(".shiftDetail").css("min-height",$(".rightSideBar").height()+50);
+        }
     </script>
 </apex:page>
