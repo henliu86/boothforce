@@ -2,8 +2,8 @@
     <script type="text/javascript">
         /*******************************************
         * this page has all the global javascript
-        * functions.
-        *
+        * functions that includes callout to salesforce
+        * and animation functions
         *******************************************/
         function getUserInfo(callback){
             Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.Boothforce_MobileController.fetchMyUserInfo}', '{!$User.Id}' , function(result, event) {

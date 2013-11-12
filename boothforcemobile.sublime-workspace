@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"Booth",
+				"Booth__r"
+			],
+			[
+				"inde",
+				"indexOf"
+			],
+			[
+				"Boo",
+				"Booth__r"
+			],
+			[
 				"Shift",
 				"Shift_Time__r"
 			],
@@ -72,10 +84,6 @@
 				"module"
 			],
 			[
-				"Boo",
-				"Booth__c"
-			],
-			[
 				"shift",
 				"Shift_Time__c"
 			],
@@ -95,7 +103,7 @@
 			"file": "src/pages/Boothforce_Mobile.page",
 			"settings":
 			{
-				"buffer_size": 4319,
+				"buffer_size": 4641,
 				"line_ending": "Unix"
 			}
 		},
@@ -103,7 +111,7 @@
 			"file": "src/pages/Boothforce_Mobile_AngularApp.page",
 			"settings":
 			{
-				"buffer_size": 23353,
+				"buffer_size": 26338,
 				"line_ending": "Unix"
 			}
 		},
@@ -111,7 +119,7 @@
 			"file": "src/pages/boothforce_mobile_backend.page",
 			"settings":
 			{
-				"buffer_size": 10008,
+				"buffer_size": 10732,
 				"line_ending": "Unix"
 			}
 		},
@@ -119,7 +127,7 @@
 			"file": "src/classes/Boothforce_MobileController.cls",
 			"settings":
 			{
-				"buffer_size": 6717,
+				"buffer_size": 7219,
 				"line_ending": "Unix"
 			}
 		},
@@ -127,7 +135,7 @@
 			"file": "src/pages/Boothforce_Mobile_CSS.page",
 			"settings":
 			{
-				"buffer_size": 10414,
+				"buffer_size": 10765,
 				"line_ending": "Unix"
 			}
 		}
@@ -223,6 +231,23 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ready",
+			"getShiftStaff",
+			"250",
+			".shiftDetail",
+			"$(\"popup-detail\").center();",
+			".managerDiv",
+			"vw",
+			"manager",
+			"loadManagerView",
+			"toLocaleTimeString",
+			"getShiftManager",
+			"getManagerShiftTimes",
+			"getShiftStaff",
+			"getManagerShiftTimes",
+			"managerShiftTimes",
+			"getManagerShiftTimes",
+			"getManagerBooths",
 			"oyster",
 			"sshift",
 			"shiftManager",
@@ -351,7 +376,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -360,15 +385,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4319,
+						"buffer_size": 4641,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								4319
+								4641,
+								4641
 							]
 						],
 						"settings":
@@ -377,7 +402,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 535.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -388,15 +413,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23353,
+						"buffer_size": 26338,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12903,
-								12904
+								21064,
+								21064
 							]
 						],
 						"settings":
@@ -404,7 +429,7 @@
 							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 4483.0,
+						"translation.y": 6800.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -415,15 +440,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10008,
+						"buffer_size": 10732,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								10008
+								10455,
+								10477
 							]
 						],
 						"settings":
@@ -433,7 +458,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1185.0,
+						"translation.y": 2996.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -444,15 +469,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6717,
+						"buffer_size": 7219,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								6717
+								693,
+								693
 							]
 						],
 						"settings":
@@ -461,7 +486,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 221.0,
+						"translation.y": 224.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -472,15 +497,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10414,
+						"buffer_size": 10765,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								10414
+								4582,
+								4582
 							]
 						],
 						"settings":
@@ -489,7 +514,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1006.0,
+						"translation.y": 3290.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

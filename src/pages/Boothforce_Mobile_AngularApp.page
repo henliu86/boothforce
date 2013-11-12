@@ -4,7 +4,12 @@
 	*  Module
 	*
 	* -- Description --
-	* angular config, controller, and directives 
+	* Boothforce_Mobile is the main page
+	* Boothforce_Mobile_AngularApp (this page) is the vf page with angular controller and directives
+	* boothforce_mobile_backend is the vf page with global functions including callout functions to salesforce database and animation functions
+	* Boothforce_Mobile_CSS is the vf page with all the styling
+	* Boothforce_MobileController.cls is the apex class with all the remote actions
+	* 
 	*/
 	
 	angular.module('boothforce', ['ngAnimate']).config(function($routeProvider){
@@ -301,16 +306,9 @@
 						});
 					}
 
-					/*
-					for(var i=0;i<$scope.userfilter.managerShiftTimePickList.length;i++)
-						if($scope.userfilter.managerShiftTimePickList[i].Id == $scope.currentShift.Shift_Time__c)
-							$scope.userfilter.managerShiftTimeSelected = $scope.userfilter.managerShiftTimePickList[i];
-					*/
-					/*
-					$scope.userfilter.managerBoothSelected = {'Name': $scope.currentShift.Booth__r.Name, 'Id':$scope.currentShift.Booth__c};
-					$scope.userfilter.managerShiftTimeSelected = {'Name': $scope.currentShift.Shift_Time__r.Name, 'Id':$scope.Shift_Time__c};
-					*/
-
+					//This one of the most confusing requirement, really bad way to solve shift managers being late/changed
+					// What needs to be change for next year is to allow reassignment(shift's manager shift) by owner on the mobile app or reassignment by manager of managers
+					// This way you can keep track of what really happened an no other shift managers can check someone else in
 					$scope.selectChanged = function()
 					{
 						//manager booth is selected and has changed
